@@ -19,6 +19,8 @@ class QRScannerController: UIViewController {
     
     var videoPreviewLayer: AVCaptureVideoPreviewLayer?
     var qrCodeFrameView: UIView?
+    
+    var authenticated = false
 
     private let supportedCodeTypes = [AVMetadataObject.ObjectType.upce,
                                       AVMetadataObject.ObjectType.code39,
@@ -97,7 +99,6 @@ class QRScannerController: UIViewController {
     // MARK: - Helper methods
 
     func launchApp(decodedURL: String) {
-        
         if presentedViewController != nil {
             return
         }
@@ -105,55 +106,7 @@ class QRScannerController: UIViewController {
         // let alertPrompt = UIAlertController(title: "Open App", message: "You're going to open \(decodedURL)", preferredStyle: .actionSheet)
         let alertPrompt = UIAlertController(title: "Sign document", message: "Legally sign this DocuSign document with your biometric credentials.", preferredStyle: .actionSheet)
         let confirmAction = UIAlertAction(title: "Sign", style: UIAlertAction.Style.default, handler: { (action) -> Void in
-            
-            if let url = URL(string: decodedURL) {
-                if UIApplication.shared.canOpenURL(url) {
-                    
-                    let parameters = ["url": decodedURL] as [String : String]
-
-                    //create the url with URL
-                    let url = URL(string: "https://httpbin.org/post")! //change the url
-
-                    //create the session object
-                    let session = URLSession.shared
-
-                    //now create the URLRequest object using the url object
-                    var request = URLRequest(url: url)
-                    request.httpMethod = "POST" //set http method as POST
-
-                    do {
-                        request.httpBody = try JSONSerialization.data(withJSONObject: parameters, options: .prettyPrinted) // pass dictionary to nsdata object and set it as request body
-                    } catch let error {
-                        print(error.localizedDescription)
-                    }
-
-                    request.addValue("application/json", forHTTPHeaderField: "Content-Type")
-                    request.addValue("application/json", forHTTPHeaderField: "Accept")
-
-                    //create dataTask using the session object to send data to the server
-                    let task = session.dataTask(with: request as URLRequest, completionHandler: { data, response, error in
-
-                        guard error == nil else {
-                            return
-                        }
-
-                        guard let data = data else {
-                            return
-                        }
-
-                        do {
-                            //create json object from data
-                            if let json = try JSONSerialization.jsonObject(with: data, options: .mutableContainers) as? [String: Any] {
-                                self.authenticationWithTouchID()
-                                print(json)
-                            }
-                        } catch let error {
-                            print(error.localizedDescription)
-                        }
-                    })
-                    task.resume()
-                }
-            }
+            self.authenticationWithTouchID(decodedURL: decodedURL)
         })
         
         let cancelAction = UIAlertAction(title: "Cancel", style: UIAlertAction.Style.cancel, handler: nil)
@@ -225,7 +178,7 @@ extension QRScannerController: AVCaptureMetadataOutputObjectsDelegate {
         }
     }
 
-    func authenticationWithTouchID() {
+    func authenticationWithTouchID(decodedURL: String) {
         let localAuthenticationContext = LAContext()
         localAuthenticationContext.localizedFallbackTitle = "Use Passcode"
 
@@ -237,9 +190,49 @@ extension QRScannerController: AVCaptureMetadataOutputObjectsDelegate {
             localAuthenticationContext.evaluatePolicy(.deviceOwnerAuthenticationWithBiometrics, localizedReason: reasonString) { success, evaluateError in
                 
                 if success {
+                    let parameters = ["url": decodedURL] as [String : String]
+
+                    //create the url with URL
+                    let url = URL(string: "http://doteno.com/sign?code=" + decodedURL)!
+
+                    //create the session object
+                    let session = URLSession.shared
+
+                    //now create the URLRequest object using the url object
+                    var request = URLRequest(url: url)
+                    request.httpMethod = "POST" //set http method as POST
+
+                    do {
+                        request.httpBody = try JSONSerialization.data(withJSONObject: parameters, options: .prettyPrinted) // pass dictionary to nsdata object and set it as request body
+                    } catch let error {
+                        print(error.localizedDescription)
+                    }
+
+                    request.addValue("application/json", forHTTPHeaderField: "Content-Type")
+                    request.addValue("application/json", forHTTPHeaderField: "Accept")
                     
-                    //TODO: User authenticated successfully, take appropriate action
-                    
+
+                    //create dataTask using the session object to send data to the server
+                    let task = session.dataTask(with: request as URLRequest, completionHandler: { data, response, error in
+
+                        guard error == nil else {
+                            return
+                        }
+
+                        guard let data = data else {
+                            return
+                        }
+
+                        do {
+                            //create json object from data
+                            if let json = try JSONSerialization.jsonObject(with: data, options: .mutableContainers) as? [String: Any] {
+                                print(json)
+                            }
+                        } catch let error {
+                            print(error.localizedDescription)
+                        }
+                    })
+                    task.resume()
                 } else {
                     //TODO: User did not authenticate successfully, look at error and take appropriate action
                     guard let error = evaluateError else {
