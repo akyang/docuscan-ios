@@ -16,7 +16,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		F4F09DB31DAF669400026BB2 /* DocuSign.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = DocuSign.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		F4F09DB31DAF669400026BB2 /* DocuScan.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = DocuScan.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		F4F09DB61DAF669400026BB2 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		F4F09DBB1DAF669400026BB2 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		F4F09DBD1DAF669400026BB2 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -48,7 +48,7 @@
 		F4F09DB41DAF669400026BB2 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				F4F09DB31DAF669400026BB2 /* DocuSign.app */,
+				F4F09DB31DAF669400026BB2 /* DocuScan.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -70,9 +70,9 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		F4F09DB21DAF669400026BB2 /* DocuSign */ = {
+		F4F09DB21DAF669400026BB2 /* DocuScan */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = F4F09DC51DAF669400026BB2 /* Build configuration list for PBXNativeTarget "DocuSign" */;
+			buildConfigurationList = F4F09DC51DAF669400026BB2 /* Build configuration list for PBXNativeTarget "DocuScan" */;
 			buildPhases = (
 				F4F09DAF1DAF669400026BB2 /* Sources */,
 				F4F09DB01DAF669400026BB2 /* Frameworks */,
@@ -82,9 +82,9 @@
 			);
 			dependencies = (
 			);
-			name = DocuSign;
+			name = DocuScan;
 			productName = QRCodeReader;
-			productReference = F4F09DB31DAF669400026BB2 /* DocuSign.app */;
+			productReference = F4F09DB31DAF669400026BB2 /* DocuScan.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
@@ -119,7 +119,7 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				F4F09DB21DAF669400026BB2 /* DocuSign */,
+				F4F09DB21DAF669400026BB2 /* DocuScan */,
 			);
 		};
 /* End PBXProject section */
@@ -315,7 +315,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		F4F09DC51DAF669400026BB2 /* Build configuration list for PBXNativeTarget "DocuSign" */ = {
+		F4F09DC51DAF669400026BB2 /* Build configuration list for PBXNativeTarget "DocuScan" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				F4F09DC61DAF669400026BB2 /* Debug */,
